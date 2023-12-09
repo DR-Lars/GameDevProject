@@ -10,6 +10,7 @@ namespace GameDevProject
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D _texture;
+        private Rectangle _rectFrame;
 
         public Game1()
         {
@@ -21,7 +22,7 @@ namespace GameDevProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            _rectFrame = new Rectangle(0,0,16,32);
             base.Initialize();
         }
 
@@ -47,7 +48,7 @@ namespace GameDevProject
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
-            _spriteBatch.Draw(_texture, new Vector2(0, 0), Color.White);
+            _spriteBatch.Draw(_texture, new Vector2(0, 0), _rectFrame, Color.White);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
