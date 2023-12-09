@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SharpDX.Direct3D9;
 
 namespace GameDevProject
 {
@@ -8,6 +9,7 @@ namespace GameDevProject
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private Texture2D _texture;
 
         public Game1()
         {
@@ -28,6 +30,7 @@ namespace GameDevProject
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            _texture = Content.Load<Texture2D>("spritesheetNinja");
         }
 
         protected override void Update(GameTime gameTime)
@@ -43,9 +46,9 @@ namespace GameDevProject
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
-
+            _spriteBatch.Begin();
+            _spriteBatch.Draw(_texture, new Vector2(0, 0), Color.White);
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }
