@@ -12,26 +12,22 @@ namespace GameDevProject
     {
         private Texture2D _texture;
         private Rectangle _rectFrame;
-        private int _frameX;
+        private Animation _animation;
 
         public Ninja(Texture2D texture)
         {
             _texture = texture;
-            _rectFrame = new Rectangle(_frameX+1, 0, 14, 20);
+            _animation = new Animation();
+            _animation.FramesFromTextureProperties(texture.Width, texture.Height, 3, 6);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, new Vector2(0, 0), _rectFrame, Color.White);
+            spriteBatch.Draw(_texture, new Vector2(0, 0), _animation.currentFrame.SourceRectangle, Color.White);
         }
         public void Update()
         {
-            _frameX += 16;
-            if (_frameX > 48)
-            {
-                _frameX = 0;
-            }
-            _rectFrame.X = _frameX;
+            _animation.Update();
         }
     }
 }
