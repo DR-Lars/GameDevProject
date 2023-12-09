@@ -11,15 +11,16 @@ namespace GameDevProject
         private Texture2D _texture;
         private Rectangle _rectFrame, _actualScreenRectangle;
         private RenderTarget2D _nativeRenderTarget;
-        private int screenWidth, screenHeight;
+        private int _screenWidth, _screenHeight, _frameX;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
-            screenHeight = 1080;
-            screenWidth = (screenHeight / 9) * 16;
-            _graphics.PreferredBackBufferWidth = screenWidth;
-            _graphics.PreferredBackBufferHeight = screenHeight;
+            _screenHeight = 1080;
+            _screenWidth = (_screenHeight / 9) * 16;
+            _graphics.PreferredBackBufferWidth = _screenWidth;
+            _graphics.PreferredBackBufferHeight = _screenHeight;
+            _frameX = 1;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -29,7 +30,7 @@ namespace GameDevProject
             // TODO: Add your initialization logic here 
             _nativeRenderTarget = new RenderTarget2D(GraphicsDevice, 192, 108);
             _rectFrame = new Rectangle(1,0,14,20);
-            _actualScreenRectangle = new Rectangle(0,0,screenWidth,screenHeight);
+            _actualScreenRectangle = new Rectangle(_frameX,0,_screenWidth,_screenHeight);
             base.Initialize();
         }
 
@@ -58,6 +59,14 @@ namespace GameDevProject
             _spriteBatch.Begin();
             _spriteBatch.Draw(_texture, new Vector2(0, 0), _rectFrame, Color.White);
             _spriteBatch.End();
+
+            _frameX += 16;
+            if (_frameX > 48)
+            {
+                _frameX = 0;
+            }
+            _rectFrame.X = _frameX;
+
             GraphicsDevice.SetRenderTarget(null);
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             _spriteBatch.Draw(_nativeRenderTarget, _actualScreenRectangle, Color.White);
