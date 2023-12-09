@@ -11,12 +11,15 @@ namespace GameDevProject
         private Texture2D _texture;
         private Rectangle _rectFrame, _actualScreenRectangle;
         private RenderTarget2D _nativeRenderTarget;
+        private int screenWidth, screenHeight;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = 1280;
-            _graphics.PreferredBackBufferHeight = 720;
+            screenHeight = 1080;
+            screenWidth = (screenHeight / 9) * 16;
+            _graphics.PreferredBackBufferWidth = screenWidth;
+            _graphics.PreferredBackBufferHeight = screenHeight;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -26,7 +29,7 @@ namespace GameDevProject
             // TODO: Add your initialization logic here 
             _nativeRenderTarget = new RenderTarget2D(GraphicsDevice, 192, 108);
             _rectFrame = new Rectangle(1,0,14,20);
-            _actualScreenRectangle = new Rectangle(0,0,1280,720);
+            _actualScreenRectangle = new Rectangle(0,0,screenWidth,screenHeight);
             base.Initialize();
         }
 
