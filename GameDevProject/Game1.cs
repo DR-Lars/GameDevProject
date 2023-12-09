@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SharpDX.Direct3D9;
@@ -22,7 +22,7 @@ namespace GameDevProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            _rectFrame = new Rectangle(0,0,16,32);
+            _rectFrame = new Rectangle(1,0,14,20);
             base.Initialize();
         }
 
