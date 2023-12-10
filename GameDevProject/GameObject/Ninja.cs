@@ -1,4 +1,5 @@
 using GameDevProject.Animate;
+using GameDevProject.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -15,10 +16,13 @@ namespace GameDevProject.GameObject
         private Texture2D _texture;
         private Animation _animation;
         private Vector2 _position, _speed;
+        private IInputReader _inputReader;
 
-        public Ninja(Texture2D texture)
+        public Ninja(Texture2D texture, IInputReader inputReader)
         {
             _texture = texture;
+            _inputReader = inputReader;
+
             _animation = new Animation();
             _animation.FramesFromTextureProperties(texture.Width, texture.Height, 3, 6);
 
@@ -27,25 +31,20 @@ namespace GameDevProject.GameObject
         }
         public void Update(GameTime gameTime)
         {
-            KeyboardState state = Keyboard.GetState();
-            var direction = Vector2.Zero;
-            if (state.IsKeyDown(Keys.Left))
-            {
-                direction.X -= 1;
-            }
-            if (state.IsKeyDown(Keys.Right))
-            {
-                direction.X += 1;
-            }
-            direction *= _speed;
-            _position += direction;
-
+            Move();
             _animation.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_texture, _position, _animation.currentFrame.SourceRectangle, Color.White);
+        }
+
+        private void Move()
+        {
+            Vector2 direction = _inputReader.ReadInput();
+            direction *= _speed;
+            _position += direction;
         }
     }
 }

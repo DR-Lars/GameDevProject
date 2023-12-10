@@ -1,4 +1,5 @@
 ﻿using GameDevProject.GameObject;
+using GameDevProject.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -32,7 +33,7 @@ namespace GameDevProject
             _nativeRenderTarget = new RenderTarget2D(GraphicsDevice, 256, 144);
             _actualScreenRectangle = new Rectangle(0,0,_screenWidth,_screenHeight);
             base.Initialize();
-            _ninja = new Ninja(_texture);
+            _ninja = new Ninja(_texture, new KeyboardReader());
         }
 
         protected override void LoadContent()
