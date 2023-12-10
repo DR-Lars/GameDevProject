@@ -12,12 +12,16 @@ namespace GameDevProject
     {
         private Texture2D _texture;
         private Animation _animation;
+        private Vector2 _position, _speed;
 
         public Ninja(Texture2D texture)
         {
             _texture = texture;
             _animation = new Animation();
             _animation.FramesFromTextureProperties(texture.Width, texture.Height, 3, 6);
+
+            _position = new Vector2(0, 0);
+            _speed = new Vector2(1, 1);
         }
         public void Update(GameTime gameTime)
         {
@@ -26,7 +30,13 @@ namespace GameDevProject
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, new Vector2(0, 0), _animation.currentFrame.SourceRectangle, Color.White);
+            spriteBatch.Draw(_texture, _position, _animation.currentFrame.SourceRectangle, Color.White);
+            Move();
+        }
+
+        private void Move()
+        {
+            _position += _speed;
         }
     }
 }
