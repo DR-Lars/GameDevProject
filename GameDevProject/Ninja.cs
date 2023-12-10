@@ -37,6 +37,14 @@ namespace GameDevProject
         private void Move()
         {
             _position += _speed;
+            if (_position.X > 256 - 16 || _position.X < 0)
+            {
+                _speed.X *= -1;
+            }
+            if (_position.Y > 144 - 22 || _position.Y < 0)
+            {
+                _speed.Y *= -1;
+            }
         }
     }
 }
