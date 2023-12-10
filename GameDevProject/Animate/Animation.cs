@@ -5,57 +5,57 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameDevProject
+namespace GameDevProject.Animate
 {
     internal class Animation
     {
         public AnimationFrame currentFrame { get; set; }
-        private List<AnimationFrame> frames;
-        private int counter;
-        private double secondCounter;
-        private bool right;
+        private List<AnimationFrame> _frames;
+        private int _counter;
+        private double _secondCounter;
+        private bool _plus;
 
-        public int fps { get; set; } = 6;
+        public int fps { get; set; } = 5;
 
         public Animation()
         {
-            frames = new List<AnimationFrame>();
+            _frames = new List<AnimationFrame>();
         }
 
         public void AddFrame(AnimationFrame frame)
         {
-            frames.Add(frame);
-            currentFrame = frames[0];
+            _frames.Add(frame);
+            currentFrame = _frames[0];
         }
 
         public void Update(GameTime gameTime)
         {
-            currentFrame = frames[counter];
+            currentFrame = _frames[_counter];
 
-            secondCounter += gameTime.ElapsedGameTime.TotalSeconds;
+            _secondCounter += gameTime.ElapsedGameTime.TotalSeconds;
 
-            if(secondCounter >= 1d / fps)
+            if (_secondCounter >= 1d / fps)
             {
-                switch (counter)
+                switch (_counter)
                 {
                     case 0:
-                        right = true;
+                        _plus = true;
                         break;
                     case 2:
-                        right = false;
+                        _plus = false;
                         break;
                     default:
                         break;
                 }
-                if (right)
+                if (_plus)
                 {
-                    counter++;
+                    _counter++;
                 }
                 else
                 {
-                    counter--;
+                    _counter--;
                 }
-                secondCounter = 0;
+                _secondCounter = 0;
             }
         }
 
@@ -66,7 +66,7 @@ namespace GameDevProject
 
             for (int x = 0; x <= width - widthOfFrame; x += widthOfFrame)
             {
-                frames.Add(new AnimationFrame(new Rectangle(x, 0, widthOfFrame, heightOfFrame)));
+                _frames.Add(new AnimationFrame(new Rectangle(x, 0, widthOfFrame, heightOfFrame)));
             }
         }
 

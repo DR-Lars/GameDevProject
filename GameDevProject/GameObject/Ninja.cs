@@ -1,3 +1,4 @@
+using GameDevProject.Animate;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameDevProject
+namespace GameDevProject.GameObject
 {
     internal class Ninja : IGameObject
     {
@@ -45,20 +46,6 @@ namespace GameDevProject
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_texture, _position, _animation.currentFrame.SourceRectangle, Color.White);
-            //Move();
-        }
-
-        private void Move()
-        {
-            _position += _speed;
-            if (_position.X > 256 - 16 || _position.X < 0)
-            {
-                _speed.X *= -1;
-            }
-            if (_position.Y > 144 - 22 || _position.Y < 0)
-            {
-                _speed.Y *= -1;
-            }
         }
     }
 }

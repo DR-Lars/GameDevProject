@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameDevProject
+namespace GameDevProject.Animate
 {
     internal class AnimationFrame
     {
