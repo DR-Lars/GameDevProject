@@ -1,5 +1,6 @@
 using GameDevProject.Animate;
 using GameDevProject.Input;
+using GameDevProject.Movement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -11,23 +12,28 @@ using System.Threading.Tasks;
 
 namespace GameDevProject.GameObject
 {
-    internal class Ninja : IGameObject
+    internal class Ninja : IGameObject, IMovable
     {
         private Texture2D _texture;
         private Animation _animation;
-        private Vector2 _position, _speed;
-        private IInputReader _inputReader;
+        private MovementManager _movementManager;
+
+        public Vector2 Position { get; set; }
+        public Vector2 Speed { get; set; }
+        public IInputReader InputReader { get; set; }
 
         public Ninja(Texture2D texture, IInputReader inputReader)
         {
+            _movementManager = new MovementManager();
+
             _texture = texture;
-            _inputReader = inputReader;
+            InputReader = inputReader;
 
             _animation = new Animation();
             _animation.FramesFromTextureProperties(texture.Width, texture.Height, 3, 6);
 
-            _position = new Vector2(0, 0);
-            _speed = new Vector2(1, 1);
+            Position = new Vector2(0, 0);
+            Speed = new Vector2(1, 1);
         }
         public void Update(GameTime gameTime)
         {
@@ -37,14 +43,12 @@ namespace GameDevProject.GameObject
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, _position, _animation.currentFrame.SourceRectangle, Color.White);
+            spriteBatch.Draw(_texture, Position, _animation.currentFrame.SourceRectangle, Color.White);
         }
 
         private void Move()
         {
-            Vector2 direction = _inputReader.ReadInput();
-            direction *= _speed;
-            _position += direction;
+            _movementManager.Move(this);
         }
     }
 }
