@@ -12,7 +12,7 @@ namespace GameDevProject
         private Rectangle _actualScreenRectangle;
         private RenderTarget2D _nativeRenderTarget;
         private int _screenWidth, _screenHeight;
-        private Ninja ninja;
+        private Ninja _ninja;
 
         public Game1()
         {
@@ -28,10 +28,10 @@ namespace GameDevProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here 
-            _nativeRenderTarget = new RenderTarget2D(GraphicsDevice, 192, 108);
+            _nativeRenderTarget = new RenderTarget2D(GraphicsDevice, 256, 144);
             _actualScreenRectangle = new Rectangle(0,0,_screenWidth,_screenHeight);
             base.Initialize();
-            ninja = new Ninja(_texture);
+            _ninja = new Ninja(_texture);
         }
 
         protected override void LoadContent()
@@ -48,7 +48,7 @@ namespace GameDevProject
                 Exit();
 
             // TODO: Add your update logic here
-            ninja.Update(gameTime);
+            _ninja.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -57,7 +57,7 @@ namespace GameDevProject
             GraphicsDevice.SetRenderTarget(_nativeRenderTarget);
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
-            ninja.Draw(_spriteBatch);
+            _ninja.Draw(_spriteBatch);
             _spriteBatch.End();
 
             GraphicsDevice.SetRenderTarget(null);

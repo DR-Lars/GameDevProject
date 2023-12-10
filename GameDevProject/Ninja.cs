@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,13 +26,26 @@ namespace GameDevProject
         }
         public void Update(GameTime gameTime)
         {
+            KeyboardState state = Keyboard.GetState();
+            var direction = Vector2.Zero;
+            if (state.IsKeyDown(Keys.Left))
+            {
+                direction.X -= 1;
+            }
+            if (state.IsKeyDown(Keys.Right))
+            {
+                direction.X += 1;
+            }
+            direction *= _speed;
+            _position += direction;
+
             _animation.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_texture, _position, _animation.currentFrame.SourceRectangle, Color.White);
-            Move();
+            //Move();
         }
 
         private void Move()
