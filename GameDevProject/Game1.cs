@@ -48,7 +48,7 @@ namespace GameDevProject
                 Exit();
 
             // TODO: Add your update logic here
-            ninja.Update();
+            ninja.Update(gameTime);
             base.Update(gameTime);
         }
 

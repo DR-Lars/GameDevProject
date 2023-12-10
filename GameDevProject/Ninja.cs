@@ -11,7 +11,6 @@ namespace GameDevProject
     internal class Ninja : IGameObject
     {
         private Texture2D _texture;
-        private Rectangle _rectFrame;
         private Animation _animation;
 
         public Ninja(Texture2D texture)
@@ -20,14 +19,14 @@ namespace GameDevProject
             _animation = new Animation();
             _animation.FramesFromTextureProperties(texture.Width, texture.Height, 3, 6);
         }
+        public void Update(GameTime gameTime)
+        {
+            _animation.Update(gameTime);
+        }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_texture, new Vector2(0, 0), _animation.currentFrame.SourceRectangle, Color.White);
-        }
-        public void Update()
-        {
-            _animation.Update();
         }
     }
 }
