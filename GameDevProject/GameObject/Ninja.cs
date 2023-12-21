@@ -4,6 +4,7 @@ using GameDevProject.Movement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,8 +30,8 @@ namespace GameDevProject.GameObject
             _texture = texture;
             InputReader = inputReader;
 
-            _animation = new Animation();
-            _animation.FramesFromTextureProperties(texture.Width, texture.Height, 3, 6);
+            _animation = new Animation(0);
+            _animation.SelectAnimation(texture.Width, texture.Height, 3, 8);
 
             Position = new Vector2(0, 0);
             Speed = new Vector2(1, 1);
@@ -43,12 +44,31 @@ namespace GameDevProject.GameObject
 
         public void Draw(SpriteBatch spriteBatch)
         {
+
             spriteBatch.Draw(_texture, Position, _animation.currentFrame.SourceRectangle, Color.White);
         }
 
         private void Move()
         {
+            Vector2 beforePos = Position;
             _movementManager.Move(this);
+            if (beforePos.Y > Position.Y && _animation.direction != 1)
+            {
+                _animation = new Animation(1);
+            }
+            else if (beforePos.Y < Position.Y && _animation.direction != 0)
+            {
+                _animation = new Animation(0);
+            }
+            else if (beforePos.X > Position.X && _animation.direction != 2)
+            {
+                _animation = new Animation(2);
+            }
+            else if (beforePos.X < Position.X && _animation.direction != 3)
+            {
+                _animation = new Animation(3);
+            }
+            _animation.SelectAnimation(_texture.Width, _texture.Height, 3, 8);
         }
     }
 }

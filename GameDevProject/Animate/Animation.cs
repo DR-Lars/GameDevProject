@@ -15,11 +15,14 @@ namespace GameDevProject.Animate
         private double _secondCounter;
         private bool _plus;
 
+        public int direction { get; private set; }
+        
         public int fps { get; set; } = 5;
 
-        public Animation()
+        public Animation(int direction)
         {
             _frames = new List<AnimationFrame>();
+            this.direction = direction;
         }
 
         public void AddFrame(AnimationFrame frame)
@@ -59,14 +62,14 @@ namespace GameDevProject.Animate
             }
         }
 
-        public void FramesFromTextureProperties(int width, int height, int numberOfWidthSprites, int numberOfHeightSprites)
+        public void SelectAnimation(int width, int height, int numberOfWidthSprites, int numberOfHeightSprites)
         {
             int widthOfFrame = width / numberOfWidthSprites;
             int heightOfFrame = height / numberOfHeightSprites;
 
             for (int x = 0; x <= width - widthOfFrame; x += widthOfFrame)
             {
-                _frames.Add(new AnimationFrame(new Rectangle(x, 0, widthOfFrame, heightOfFrame)));
+                _frames.Add(new AnimationFrame(new Rectangle(x, direction * heightOfFrame, widthOfFrame, heightOfFrame)));
             }
         }
 
