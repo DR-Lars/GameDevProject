@@ -14,7 +14,6 @@ namespace GameDevProject.Animate
         private int _counter;
         private double _secondCounter;
         private bool _plus;
-
         public int direction { get; private set; }
         
         public int fps { get; set; } = 5;
@@ -44,7 +43,7 @@ namespace GameDevProject.Animate
                     case 0:
                         _plus = true;
                         break;
-                    case 2:
+                    case 3:
                         _plus = false;
                         break;
                     default:
@@ -67,9 +66,9 @@ namespace GameDevProject.Animate
             int widthOfFrame = width / numberOfWidthSprites;
             int heightOfFrame = height / numberOfHeightSprites;
 
-            for (int x = 0; x <= width - widthOfFrame; x += widthOfFrame)
+            for (int x = 0; x <= height - heightOfFrame; x += heightOfFrame)
             {
-                _frames.Add(new AnimationFrame(new Rectangle(x, direction * heightOfFrame, widthOfFrame, heightOfFrame)));
+                _frames.Add(new AnimationFrame(new Rectangle(direction * widthOfFrame, x, widthOfFrame, heightOfFrame)));
             }
         }
 
