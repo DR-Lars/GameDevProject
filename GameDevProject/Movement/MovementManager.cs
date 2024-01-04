@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameDevProject.Animate;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,29 @@ namespace GameDevProject.Movement
             {
                 movable.Position = futurePosition;
             }
+        }
+
+        public int AnimationDirection(IMovable movable)
+        {
+            Vector2 beforePos = movable.Position;
+            Move(movable);
+            if (beforePos.Y > movable.Position.Y)
+            {
+                return 1;
+            }
+            else if (beforePos.Y < movable.Position.Y)
+            {
+                return 0;
+            }
+            else if (beforePos.X > movable.Position.X)
+            {
+                return 2;
+            }
+            else if (beforePos.X < movable.Position.X)
+            {
+                return 3;
+            }
+            else return 4;
         }
     }
 }

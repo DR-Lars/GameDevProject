@@ -18,7 +18,6 @@ namespace GameDevProject.GameObject
         private Texture2D _texture;
         private Animation _animation;
         private MovementManager _movementManager;
-
         public Vector2 Position { get; set; }
         public Vector2 Speed { get; set; }
         public IInputReader InputReader { get; set; }
@@ -44,31 +43,17 @@ namespace GameDevProject.GameObject
 
         public void Draw(SpriteBatch spriteBatch)
         {
-
             spriteBatch.Draw(_texture, Position, _animation.currentFrame.SourceRectangle, Color.White);
         }
 
         private void Move()
         {
-            Vector2 beforePos = Position;
-            _movementManager.Move(this);
-            if (beforePos.Y > Position.Y && _animation.direction != 1)
+            int aniDir = _movementManager.AnimationDirection(this);
+            if (aniDir != _animation.direction)
             {
-                _animation = new Animation(1);
+                _animation = new Animation(_movementManager.AnimationDirection(this));
             }
             _animation.SelectAnimation(_texture.Width, _texture.Height, 4, 4);
-            {
-                _animation = new Animation(0);
-            }
-            else if (beforePos.X > Position.X && _animation.direction != 2)
-            {
-                _animation = new Animation(2);
-            }
-            else if (beforePos.X < Position.X && _animation.direction != 3)
-            {
-                _animation = new Animation(3);
-            }
-            _animation.SelectAnimation(_texture.Width, _texture.Height, 3, 8);
         }
     }
 }
