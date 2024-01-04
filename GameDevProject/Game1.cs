@@ -41,7 +41,7 @@ namespace GameDevProject
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            _texture = Content.Load<Texture2D>("spritesheetNinja");
+            _texture = Content.Load<Texture2D>("ninjaWalk");
         }
 
         protected override void Update(GameTime gameTime)

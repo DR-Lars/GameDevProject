@@ -31,7 +31,7 @@ namespace GameDevProject.GameObject
             InputReader = inputReader;
 
             _animation = new Animation(0);
-            _animation.SelectAnimation(texture.Width, texture.Height, 3, 8);
+            _animation.SelectAnimation(texture.Width, texture.Height, 4, 4);
 
             Position = new Vector2(0, 0);
             Speed = new Vector2(1, 1);
@@ -56,7 +56,7 @@ namespace GameDevProject.GameObject
             {
                 _animation = new Animation(1);
             }
-            else if (beforePos.Y < Position.Y && _animation.direction != 0)
+            _animation.SelectAnimation(_texture.Width, _texture.Height, 4, 4);
             {
                 _animation = new Animation(0);
             }
