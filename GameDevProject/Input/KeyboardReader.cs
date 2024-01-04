@@ -18,17 +18,21 @@ namespace GameDevProject.Input
             {
                 direction.Y -= 1;
             }
-            if (state.IsKeyDown(Keys.Left) || state.IsKeyDown(Keys.A))
+            else if (state.IsKeyDown(Keys.Left) || state.IsKeyDown(Keys.A))
             {
                 direction.X -= 1;
             }
-            if (state.IsKeyDown(Keys.Down) || state.IsKeyDown(Keys.S))
+            else if (state.IsKeyDown(Keys.Down) || state.IsKeyDown(Keys.S))
             {
                 direction.Y += 1;
             }
-            if (state.IsKeyDown(Keys.Right) || state.IsKeyDown(Keys.D))
+            else if (state.IsKeyDown(Keys.Right) || state.IsKeyDown(Keys.D))
             {
                 direction.X += 1;
+            }
+            else
+            {
+                direction = Vector2.Zero;
             }
             return direction;
         }
