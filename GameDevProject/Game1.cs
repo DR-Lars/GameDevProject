@@ -10,11 +10,14 @@ namespace GameDevProject
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Texture2D _texture;
+        private Texture2D _textureNinja;
+        private Texture2D _textureShroom;
         private Rectangle _actualScreenRectangle;
         private RenderTarget2D _nativeRenderTarget;
         private int _screenWidth, _screenHeight;
         private Ninja _ninja;
+        private Shroom _shroom;
+        private GameTime _gameTime;
 
         public Game1()
         {
@@ -33,7 +36,8 @@ namespace GameDevProject
             _nativeRenderTarget = new RenderTarget2D(GraphicsDevice, 256, 144);
             _actualScreenRectangle = new Rectangle(0,0,_screenWidth,_screenHeight);
             base.Initialize();
-            _ninja = new Ninja(_texture, new KeyboardReader());
+            _ninja = new Ninja(_textureNinja, new KeyboardReader());
+            _shroom = new Shroom(_textureShroom, new StandardNPC());
         }
 
         protected override void LoadContent()
@@ -41,7 +45,8 @@ namespace GameDevProject
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            _texture = Content.Load<Texture2D>("ninjaWalk");
+            _textureNinja = Content.Load<Texture2D>("ninjaWalk");
+            _textureShroom = Content.Load<Texture2D>("shroomWalk");
         }
 
         protected override void Update(GameTime gameTime)
@@ -49,7 +54,8 @@ namespace GameDevProject
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            // TODO: Add your update logic 
+            _shroom.Update(gameTime);
             _ninja.Update(gameTime);
             base.Update(gameTime);
         }
@@ -59,6 +65,7 @@ namespace GameDevProject
             GraphicsDevice.SetRenderTarget(_nativeRenderTarget);
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
+            _shroom.Draw(_spriteBatch);
             _ninja.Draw(_spriteBatch);
             _spriteBatch.End();
 
