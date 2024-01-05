@@ -66,6 +66,11 @@ namespace GameDevProject.Animate
             int widthOfFrame = width / numberOfWidthSprites;
             int heightOfFrame = height / numberOfHeightSprites;
 
+            if (direction >= 4)
+            {
+                direction -= 4;
+            }
+
             for (int x = 0; x <= height - heightOfFrame; x += heightOfFrame)
             {
                 _frames.Add(new AnimationFrame(new Rectangle(direction * widthOfFrame, x, widthOfFrame, heightOfFrame)));

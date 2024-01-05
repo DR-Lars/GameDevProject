@@ -10,6 +10,7 @@ namespace GameDevProject.Movement
 {
     internal class MovementManager
     {
+        private int savedDirection;
         public Vector2 direction { get; set; }
         public void Move(IMovable movable)
         {
@@ -33,21 +34,25 @@ namespace GameDevProject.Movement
             Move(movable);
             if (beforePos.Y > movable.Position.Y)
             {
-                return 1;
+                savedDirection = 1;
+                return savedDirection;
             }
             else if (beforePos.Y < movable.Position.Y)
             {
-                return 0;
+                savedDirection = 0;
+                return savedDirection;
             }
             else if (beforePos.X > movable.Position.X)
             {
-                return 2;
+                savedDirection = 2;
+                return savedDirection;
             }
             else if (beforePos.X < movable.Position.X)
             {
-                return 3;
+                savedDirection = 3;
+                return savedDirection;
             }
-            else return 4;
+            else return 4 + savedDirection;
         }
     }
 }
