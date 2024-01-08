@@ -12,8 +12,8 @@ namespace GameDevProject.GameObject.Block
 {
     internal class Block : IGameObject
     {
+        public Hitbox hitbox { get; set; }
         public Rectangle BoundingBox { get; set; }
-        public bool Passable { get; set; }
         public Color Color { get; set; }
         public Texture2D Texture { get; set; }
         public bool active { get; set; } = true;
@@ -21,13 +21,13 @@ namespace GameDevProject.GameObject.Block
         public Block(int x, int y, Texture2D texture)
         {
             BoundingBox = new Rectangle(x, y, 32, 32);
-            Passable = true;
+            hitbox = new Hitbox(BoundingBox);
             Color = Color.White;
             Texture = texture;
         }
         public void Update(GameTime gameTime)
         {
-
+            hitbox.Update(new Vector2(BoundingBox.X, BoundingBox.Y));
         }
         public void Draw(SpriteBatch spriteBatch)
         {

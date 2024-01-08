@@ -10,12 +10,12 @@ namespace GameDevProject.GameObject.Block
 {
     internal class ObstacleBlock : Block
     {
-        public Hitbox hitbox;
         public ObstacleBlock(int x, int y, Texture2D texture) : base(x, y, texture)
         {
             BoundingBox = new Rectangle(x, y, 32, 32);
-            Passable = true;
-            hitbox = new Hitbox(BoundingBox);
+            hitbox = new Hitbox(new Rectangle(x+4,y+2,28,28));
+            Color = Color.White;
+            Texture = texture;
         }
 
     }
