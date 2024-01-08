@@ -16,7 +16,7 @@ namespace GameDevProject.GameObject
     {
         private Texture2D _texture;
         private Animation _animation;
-        private MovementManager _movementManager;
+        public  MovementManager movementManager;
         public Hitbox hitbox { get; set; }
         public bool active { get; set; } = true;
         public Vector2 Position { get; set; }
@@ -25,7 +25,7 @@ namespace GameDevProject.GameObject
 
         public Ninja(Texture2D texture, IInputReader inputReader)
         {
-            _movementManager = new MovementManager();
+            movementManager = new MovementManager();
 
             _texture = texture;
             InputReader = inputReader;
@@ -44,6 +44,7 @@ namespace GameDevProject.GameObject
             {
                 Move();
                 _animation.Update(gameTime);
+                hitbox.Update(Position);
             }
         }
 
@@ -57,17 +58,17 @@ namespace GameDevProject.GameObject
 
         private void Move()
         {
-            int aniDir = _movementManager.AnimationDirection(this, 0);
+            int aniDir = movementManager.AnimationDirection(this, 0);
             if (aniDir != _animation.direction)
             {
-                _animation = new Animation(_movementManager.AnimationDirection(this, 0));
+                _animation = new Animation(movementManager.AnimationDirection(this, 0));
             }
             _animation.SelectAnimation(_texture.Width, _texture.Height, 4, 4);
         }
 
         private void CalculateHitbox()
         {
-            hitbox = new Hitbox(new Rectangle((int)Position.X, (int)Position.Y, _animation.widthOfFrame, _animation.heightOfFrame));
+            hitbox = new Hitbox(new Rectangle((int)Position.X, (int)Position.Y, 12, 12));
         }
     }
 }
