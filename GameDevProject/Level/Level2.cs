@@ -13,10 +13,10 @@ using System.Threading.Tasks;
 
 namespace GameDevProject.Level
 {
-    internal class Level1 : ILevel
+    internal class Level2 : ILevel
     {
         private ContentManager _content;
-        public Level1(ContentManager content)
+        public Level2(ContentManager content)
         {
             _content = content;
         }
@@ -31,14 +31,14 @@ namespace GameDevProject.Level
             //Background
             for (int x = 0; x < 256; x += 32)
             {
-                for(int y = 0; y < 144; y += 32)
+                for (int y = 0; y < 144; y += 32)
                 {
                     BlockFactory.CreateBlock("NORMAL", x, y, _content.Load<Texture2D>("tileGrass")).Draw(spriteBatch);
                 }
             }
 
             //Obstacle
-            BlockFactory.CreateBlock("BOULDER", 50, 30, _content.Load<Texture2D>("tileBoulder")).Draw(spriteBatch);
+            BlockFactory.CreateBlock("BOULDER", 80, 50, _content.Load<Texture2D>("tileBoulder")).Draw(spriteBatch);
 
             //Characters
         }
