@@ -27,7 +27,7 @@ namespace GameDevProject.Movement
 
 
             if (futurePosition.X > -1 && futurePosition.X < (256 - 16) &&
-                futurePosition.Y > -1 && futurePosition.Y < (144 - 22))
+                futurePosition.Y > -1 && futurePosition.Y < (144 - 16))
             {
                 movable.Position = futurePosition;
             }

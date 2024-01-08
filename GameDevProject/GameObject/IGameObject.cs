@@ -10,6 +10,7 @@ namespace GameDevProject.GameObject
 {
     internal interface IGameObject
     {
+        public Hitbox hitbox { get; set; }
         public bool active { get; set; }
         public Collision collision { get; set; }
         void Update(GameTime gameTime);
