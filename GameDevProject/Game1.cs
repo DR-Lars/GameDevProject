@@ -1,4 +1,5 @@
 ﻿using GameDevProject.GameObject;
+using GameDevProject.GameObject.Block;
 using GameDevProject.Input;
 using GameDevProject.Level;
 using Microsoft.Xna.Framework;
@@ -89,6 +90,7 @@ namespace GameDevProject
                 Exit();
 
             // TODO: Add your update logic
+            var previousPosition = _ninja.Position;
             _level1.Update(gameTime);
             _level2.Update(gameTime);
             _shroom.Update(gameTime);
@@ -152,7 +154,14 @@ namespace GameDevProject
                     {
                         ActivateLevel(currentLevel);
                         playing = true;
-                        _gameState = GameState.Won;
+                    }
+
+                    foreach (Block block in _level1.obstacles)
+                    {
+                        if (_ninja.hitbox.IsTouching(block.hitbox))
+                        {
+                            _ninja.Position = previousPosition;
+                        }
                     }
                     break;
             }

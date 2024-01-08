@@ -11,8 +11,6 @@ namespace GameDevProject.GameObject
     {
         public Rectangle rectangle;
 
-        private Rectangle originalRectangle;
-
         public Hitbox(Rectangle rectangle)
         {
             this.rectangle = rectangle;
@@ -21,7 +19,7 @@ namespace GameDevProject.GameObject
 
         public void Update(Vector2 position)
         {
-            rectangle = new Rectangle((position + (originalRectangle.Location.ToVector2() - position)).ToPoint(), originalRectangle.Size.ToVector2().ToPoint());
+            rectangle = new Rectangle((int)position.X, (int)position.Y, rectangle.Width, rectangle.Height);
         }
 
 
