@@ -18,6 +18,7 @@ namespace GameDevProject.GameObject
         private Texture2D _texture;
         private Animation _animation;
         private MovementManager _movementManager;
+        public Hitbox hitbox { get; set; }
         public Vector2 Position { get; set; }
         public Vector2 Speed { get; set; }
         public IInputReader InputReader { get; set; }
@@ -34,6 +35,8 @@ namespace GameDevProject.GameObject
 
             Position = new Vector2(0, 0);
             Speed = new Vector2(1, 1);
+
+            CalculateHitbox();
         }
         public void Update(GameTime gameTime)
         {
@@ -54,6 +57,11 @@ namespace GameDevProject.GameObject
                 _animation = new Animation(_movementManager.AnimationDirection(this));
             }
             _animation.SelectAnimation(_texture.Width, _texture.Height, 4, 4);
+        }
+
+        private void CalculateHitbox()
+        {
+            hitbox = new Hitbox(new Rectangle((int)Position.X, (int)Position.Y, _animation.widthOfFrame, _animation.heightOfFrame));
         }
     }
 }
