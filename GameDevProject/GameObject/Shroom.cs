@@ -40,6 +40,8 @@ namespace GameDevProject.GameObject
 
             Position = new Vector2(200, 20);
             Speed = new Vector2((float)0.1, (float)0.1);
+
+            CalculateHitbox();
         }
         public void Update(GameTime gameTime)
         {
@@ -47,6 +49,7 @@ namespace GameDevProject.GameObject
             {
                 Move(gameTime.ElapsedGameTime.TotalSeconds);
                 _animation.Update(gameTime);
+                hitbox.Update(Position);
             }
         }
 
@@ -67,6 +70,11 @@ namespace GameDevProject.GameObject
                 _animation = new Animation(_movementManager.AnimationDirection(this, 1));
             }
             _animation.SelectAnimation(_texture.Width, _texture.Height, 4, 4);
+        }
+
+        private void CalculateHitbox()
+        {
+            hitbox = new Hitbox(new Rectangle((int)Position.X, (int)Position.Y, 14, 14));
         }
     }
 }
