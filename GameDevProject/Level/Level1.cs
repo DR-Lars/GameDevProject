@@ -1,4 +1,4 @@
-using GameDevProject.GameObject;
+﻿using GameDevProject.GameObject;
 using GameDevProject.GameObject.Block;
 using GameDevProject.Input;
 using Microsoft.Xna.Framework;
@@ -21,6 +21,12 @@ namespace GameDevProject.Level
         public Level1(ContentManager content)
         {
             _content = content;
+            obstacles = new List<Block>();
+            obstacles.Add(BlockFactory.CreateBlock("BOULDER", 50, 25, _content.Load<Texture2D>("tileBoulder")));
+            obstacles.Add(BlockFactory.CreateBlock("BOULDER", 90, 70, _content.Load<Texture2D>("tileBoulder")));
+            obstacles.Add(BlockFactory.CreateBlock("BOULDER", 115, 16, _content.Load<Texture2D>("tileBoulder")));
+            obstacles.Add(BlockFactory.CreateBlock("BOULDER", 190, 65, _content.Load<Texture2D>("tileBoulder")));
+            obstacles.Add(BlockFactory.CreateBlock("BOULDER", 140, 95, _content.Load<Texture2D>("tileBoulder")));
         }
 
         public void Update(GameTime gameTime)
@@ -45,7 +51,10 @@ namespace GameDevProject.Level
                 }
 
                 //Obstacle
-                BlockFactory.CreateBlock("BOULDER", 50, 30, _content.Load<Texture2D>("tileBoulder")).Draw(spriteBatch);
+                foreach(Block block in obstacles)
+                {
+                    block.Draw(spriteBatch);
+                }
 
                 //Characters
             }
