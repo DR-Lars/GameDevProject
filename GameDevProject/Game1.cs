@@ -23,6 +23,7 @@ namespace GameDevProject
         private Ninja _ninja;
         private Shroom _shroom;
         private Level1 _level1;
+        private Level2 _level2;
         private SpriteFont font;
 
         private const string gameName = "Ninja Evade";
@@ -51,6 +52,9 @@ namespace GameDevProject
 
             selectColor = Color.Gold;
 
+            _level1 = new Level1(Content);
+            _level2 = new Level2(Content);
+
             _ninja = new Ninja(_textureNinja, new KeyboardReader());
             _shroom = new Shroom(_textureShroom, _ninja);
         }
@@ -64,7 +68,6 @@ namespace GameDevProject
 
             _textureNinja = Content.Load<Texture2D>("ninjaWalk");
             _textureShroom = Content.Load<Texture2D>("shroomWalk");
-            _level1 = new Level1(Content);
         }
 
         protected override void Update(GameTime gameTime)
@@ -72,27 +75,17 @@ namespace GameDevProject
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic 
+            // TODO: Add your update logic
+            _level1.Update(gameTime);
+            _level2.Update(gameTime);
             _shroom.Update(gameTime);
             _ninja.Update(gameTime);
             base.Update(gameTime);
             switch (_gameState)
             {
                 case GameState.MainMenu:
-                    if (Keyboard.GetState().IsKeyDown(Keys.Down))
-                    {
-                        if (select == 0)
-                        {
-                            select++;
-                        }
-                    }
-                    else if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                    {
-                        if (select == 1)
-                        {
-                            select--;
-                        }
-                    }
+                    if (Keyboard.GetState().IsKeyDown(Keys.Down)) { if (select == 0) { select++; } }
+                    else if (Keyboard.GetState().IsKeyDown(Keys.Up)) { if (select == 1) { select--; } }
 
                     if (Keyboard.GetState().IsKeyDown(Keys.Enter))
                     {
@@ -128,6 +121,7 @@ namespace GameDevProject
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
             _level1.Draw(_spriteBatch);
+            _level2.Draw(_spriteBatch);
             _shroom.Draw(_spriteBatch);
             _ninja.Draw(_spriteBatch);
             _spriteBatch.End();
