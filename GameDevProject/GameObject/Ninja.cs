@@ -19,6 +19,7 @@ namespace GameDevProject.GameObject
         public  MovementManager movementManager;
         public Hitbox hitbox { get; set; }
         public bool active { get; set; } = true;
+        public Vector2 Acceleration { get; set; }
         public Vector2 Position { get; set; }
         public Vector2 Speed { get; set; }
         public IInputReader InputReader { get; set; }
@@ -35,6 +36,7 @@ namespace GameDevProject.GameObject
 
             Position = new Vector2(0, 0);
             Speed = new Vector2(1, 1);
+            Acceleration = new Vector2(0.1f, 0.1f);
 
             CalculateHitbox();
         }

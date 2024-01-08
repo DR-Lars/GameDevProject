@@ -12,6 +12,7 @@ namespace GameDevProject.Movement
     internal class MovementManager
     {
         private int savedDirection;
+        private Vector2 prevDirection;
         public double secondCounter;
         public Ninja target;
         public Vector2 direction { get; set; }
@@ -21,6 +22,12 @@ namespace GameDevProject.Movement
         {
             direction = movable.InputReader.ReadInput();
 
+            if (movable.Speed.X < new Vector2(1, 1).X)
+            {
+                movable.Acceleration = new Vector2(movable.Acceleration.X + 0.01f, movable.Acceleration.Y + 0.01f);
+                movable.Speed = movable.Acceleration + movable.Speed;
+            }
+            if (prevDirection != direction) { movable.Speed = new Vector2(0.5f, 0.5f); }
 
             Vector2 distance = direction * movable.Speed;
             Vector2 futurePosition = movable.Position + distance;
@@ -31,6 +38,7 @@ namespace GameDevProject.Movement
             {
                 movable.Position = futurePosition;
             }
+            prevDirection = direction;
         }
 
         public void MoveToTarget(IMovable movable)
@@ -44,6 +52,32 @@ namespace GameDevProject.Movement
             }
         }
 
+        public void MoveToWhenSeen(IMovable movable)
+        {
+            if (secondCounter >= 1d / fps)
+            {
+                direction = target.Position - movable.Position;
+                if (direction.Y > 2 || direction.X > 2)
+                {
+                    Vector2 distance = direction * movable.Speed;
+                    movable.Position += distance;
+                }
+                secondCounter = 0;
+            }
+        }
+
+        public void MoveInLine(IMovable movable)
+        {
+            if (secondCounter >= 1d / fps)
+            {
+                direction = target.Position - movable.Position;
+                direction = new Vector2(direction.X, 0);
+                Vector2 distance = direction * movable.Speed;
+                movable.Position += distance;
+                secondCounter = 0;
+            }
+        }
+
         public int AnimationDirection(IMovable movable, int movementType)
         {
             Vector2 beforePos = movable.Position;
@@ -51,6 +85,12 @@ namespace GameDevProject.Movement
             {
                 case 1:
                     MoveToTarget(movable);
+                    break;
+                case 2:
+                    MoveToWhenSeen(movable);
+                    break;
+                case 3:
+                    MoveInLine(movable);
                     break;
                 default:
                     Move(movable);
