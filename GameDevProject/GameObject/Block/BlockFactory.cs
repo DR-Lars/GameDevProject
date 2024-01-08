@@ -18,9 +18,9 @@ namespace GameDevProject.GameObject.Block
             {
                 newBlock = new Block(x, y, texture);
             }
-            if (type == "TRAP")
+            if (type == "BOULDER")
             {
-                //newBlock = new TrapBlock(x, y, graphics);
+                newBlock = new ObstacleBlock(x, y, texture);
             }
             if (type == "SLIME")
             {
