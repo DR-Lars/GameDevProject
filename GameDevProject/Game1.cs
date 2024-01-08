@@ -12,7 +12,7 @@ namespace GameDevProject
         private enum GameState { MainMenu, Playing, GameOver, Won, LevelSelect }
 
         private GameState _gameState = GameState.MainMenu;
-        private int currentLevel;
+        private int currentLevel = 1;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D _textureNinja;
@@ -20,6 +20,7 @@ namespace GameDevProject
         private Rectangle _actualScreenRectangle;
         private RenderTarget2D _nativeRenderTarget;
         private int _screenWidth, _screenHeight;
+        private KeyboardState _keyboardOld;
         private Ninja _ninja;
         private Shroom _shroom;
         private Level1 _level1;
@@ -31,6 +32,8 @@ namespace GameDevProject
         private const string selectText = "Select Level";
         private int select;
         private Color selectColor;
+
+        public bool playing = false;
 
         public Game1()
         {
@@ -72,7 +75,8 @@ namespace GameDevProject
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            KeyboardState keyboardNew = Keyboard.GetState();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed /*|| Keyboard.GetState().IsKeyDown(Keys.Escape)*/)
                 Exit();
 
             // TODO: Add your update logic
@@ -84,33 +88,64 @@ namespace GameDevProject
             switch (_gameState)
             {
                 case GameState.MainMenu:
+                    playing = false;
                     ActivateLevel(0);
-                    if (Keyboard.GetState().IsKeyDown(Keys.Down)) { if (select == 0) { select++; } }
-                    else if (Keyboard.GetState().IsKeyDown(Keys.Up)) { if (select == 1) { select--; } }
-
-                    if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+                    if (keyboardNew.IsKeyDown(Keys.Down) & !_keyboardOld.IsKeyDown(Keys.Down)) { if (select == 0) { select++; } }
+                    else if (keyboardNew.IsKeyDown(Keys.Up) & !_keyboardOld.IsKeyDown(Keys.Up)) { if (select == 1) { select--; } }
+                    
+                    if (keyboardNew.IsKeyDown(Keys.Enter) & !_keyboardOld.IsKeyDown(Keys.Enter))
                     {
                         if (select == 0)
                         {
                             _gameState = GameState.Playing;
-                            ActivateLevel(1);
                         }
-                        else if (select == 1)
+                        else
                         {
                             select = 0;
                             _gameState = GameState.LevelSelect;
                         }
                     }
+                    else if (keyboardNew.IsKeyDown(Keys.Escape) & _keyboardOld.IsKeyUp(Keys.Escape))
+                    {
+                        Exit();
+                    }
                     break;
                 case GameState.LevelSelect:
+                    playing = false;
+                    if (keyboardNew.IsKeyDown(Keys.Down) & !_keyboardOld.IsKeyDown(Keys.Down)) { if (select != 4) { select++; } }
+                    else if (keyboardNew.IsKeyDown(Keys.Up) & !_keyboardOld.IsKeyDown(Keys.Up)) { if (select != 0) { select--; } }
+                    
+                    if (keyboardNew.IsKeyDown(Keys.Enter) & !_keyboardOld.IsKeyDown(Keys.Enter))
+                    {
+                        _gameState = GameState.Playing;
+                        currentLevel = select + 1;
+                    }
+                    else if (keyboardNew.IsKeyDown(Keys.Escape) & !_keyboardOld.IsKeyDown(Keys.Escape))
+                    {
+                        select = 0;
+                        _gameState = GameState.MainMenu;
+                    }
                     break;
                 case GameState.GameOver:
+                    playing = false;
+                    if (Keyboard.GetState().IsKeyDown(Keys.Escape) && !_keyboardOld.IsKeyDown(Keys.Escape))
+                        _gameState = GameState.MainMenu;
                     break;
                 case GameState.Won:
+                    playing = false;
                     break;
                 case GameState.Playing:
+                    if (Keyboard.GetState().IsKeyDown(Keys.Escape) && !_keyboardOld.IsKeyDown(Keys.Escape))
+                        _gameState = GameState.MainMenu;
+                    if (!playing)
+                    {
+                        ActivateLevel(currentLevel);
+                        playing = true;
+                        _gameState = GameState.GameOver;
+                    }
                     break;
             }
+            _keyboardOld = keyboardNew;
         }
 
         protected override void Draw(GameTime gameTime)
@@ -139,6 +174,10 @@ namespace GameDevProject
                     _spriteBatch.DrawString(font, selectText, new Vector2(_screenWidth / 2, _screenHeight / 1.30f), select == 1 ? selectColor : Color.White, 0, font.MeasureString(selectText) / 2, 2, SpriteEffects.None, 0);
                     break;
                 case GameState.LevelSelect:
+                    _spriteBatch.DrawString(font, "Ninja", new Vector2(_screenWidth / 1.9f, _screenHeight * 0.4f), Color.FloralWhite, 0, font.MeasureString(gameName) / 2, 4, SpriteEffects.None, 0);
+                    _spriteBatch.DrawString(font, "Evade", new Vector2(_screenWidth / 2, _screenHeight * 0.6f), Color.FloralWhite, 0, font.MeasureString(gameName) / 2, 4, SpriteEffects.None, 0);
+                    for (int i = 0; i < 5; i++)
+                        _spriteBatch.DrawString(font, "Level " + (i + 1).ToString(), new Vector2(_screenWidth / 1.3f, _screenHeight * (0.3f + 0.1f * i)), select == i ? selectColor : Color.White, 0, font.MeasureString("Level " + (i + 1).ToString()) / 2, 2, SpriteEffects.None, 0);
                     break;
                 case GameState.GameOver:
                     break;
@@ -154,15 +193,24 @@ namespace GameDevProject
         {
             switch (level)
             {
+                case 0:
+                    _level1.active = false;
+                    _ninja.active = false;
+                    _shroom.active = false;
+                    break;
                 case 1:
                     _level1.active = true;
                     _ninja.active = true;
                     _shroom.active = true;
+                    _shroom.Position = new Vector2(200, 20);
                     break;
-                default:
-                    _level1.active = false;
-                    _ninja.active = false;
-                    _shroom.active = false;
+                case 2:
+                    _level2.active = true;
+                    _ninja.active = true;
+                    _shroom.active = true;
+                    _shroom.Position = new Vector2(130, 70);
+                    break;
+                default: 
                     break;
             }
         }
