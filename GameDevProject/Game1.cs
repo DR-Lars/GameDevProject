@@ -11,7 +11,8 @@ namespace GameDevProject
     {
         private enum GameState { MainMenu, Playing, GameOver, Won, LevelSelect }
 
-        private GameState _gameState;
+        private GameState _gameState = GameState.MainMenu;
+        private int currentLevel;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D _textureNinja;
@@ -23,6 +24,12 @@ namespace GameDevProject
         private Shroom _shroom;
         private Level1 _level1;
         private SpriteFont font;
+
+        private const string gameName = "Ninja Evade";
+        private const string startText = "Start";
+        private const string selectText = "Select Level";
+        private int select;
+        private Color selectColor;
 
         public Game1()
         {
@@ -41,6 +48,9 @@ namespace GameDevProject
             _nativeRenderTarget = new RenderTarget2D(GraphicsDevice, 256, 144);
             _actualScreenRectangle = new Rectangle(0,0,_screenWidth,_screenHeight);
             base.Initialize();
+
+            selectColor = Color.Gold;
+
             _ninja = new Ninja(_textureNinja, new KeyboardReader());
             _shroom = new Shroom(_textureShroom, _ninja);
         }
@@ -69,6 +79,36 @@ namespace GameDevProject
             switch (_gameState)
             {
                 case GameState.MainMenu:
+                    if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                    {
+                        if (select == 0)
+                        {
+                            select++;
+                        }
+                    }
+                    else if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                    {
+                        if (select == 1)
+                        {
+                            select--;
+                        }
+                    }
+
+                    if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+                    {
+
+                        if (select == 0)
+                        {
+                            _gameState = GameState.Playing;
+
+                            //levelLoader = new LevelLoader(contentManager, currentLevel);
+                        }
+                        else if (select == 1)
+                        {
+                            select = 0;
+                            _gameState = GameState.LevelSelect;
+                        }
+                    }
                     break;
                 case GameState.LevelSelect:
                     break;
@@ -83,6 +123,7 @@ namespace GameDevProject
 
         protected override void Draw(GameTime gameTime)
         {
+            base.Draw(gameTime);
             GraphicsDevice.SetRenderTarget(_nativeRenderTarget);
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
@@ -95,11 +136,14 @@ namespace GameDevProject
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             _spriteBatch.Draw(_nativeRenderTarget, _actualScreenRectangle, Color.White);
             _spriteBatch.End();
-            base.Draw(gameTime);
 
+            _spriteBatch.Begin();
             switch (_gameState)
             {
                 case GameState.MainMenu:
+                    _spriteBatch.DrawString(font, gameName, new Vector2(_screenWidth / 2, _screenHeight / 3), Color.FloralWhite, 0, font.MeasureString(gameName) / 2, 4, SpriteEffects.None, 0);
+                    _spriteBatch.DrawString(font, startText, new Vector2(_screenWidth / 2, _screenHeight / 1.70f), select == 0 ? selectColor : Color.White, 0, font.MeasureString(startText) / 2, 2, SpriteEffects.None, 0);
+                    _spriteBatch.DrawString(font, selectText, new Vector2(_screenWidth / 2, _screenHeight / 1.30f), select == 1 ? selectColor : Color.White, 0, font.MeasureString(selectText) / 2, 2, SpriteEffects.None, 0);
                     break;
                 case GameState.LevelSelect:
                     break;
@@ -110,6 +154,7 @@ namespace GameDevProject
                 case GameState.Playing:
                     break;
             }
+            _spriteBatch.End();
         }
     }
 }
