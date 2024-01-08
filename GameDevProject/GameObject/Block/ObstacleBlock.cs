@@ -15,7 +15,6 @@ namespace GameDevProject.GameObject.Block
         {
             BoundingBox = new Rectangle(x, y, 32, 32);
             Passable = true;
-            Color = Color.White;
             hitbox = new Hitbox(BoundingBox);
         }
 
