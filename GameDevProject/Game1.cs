@@ -163,6 +163,10 @@ namespace GameDevProject
                             _ninja.Position = previousPosition;
                         }
                     }
+                    if (_ninja.hitbox.IsTouching(_shroom.hitbox))
+                    {
+                        _gameState = GameState.GameOver;
+                    }
                     break;
             }
             _keyboardOld = keyboardNew;
