@@ -31,6 +31,8 @@ namespace GameDevProject
 
         private const string gameName = "Ninja Evade";
         private const string startText = "Start";
+        private const string gameOverText = "Game Over";
+        private const string mainMenuText = "Press 'Esc' to go to main menu";
         private const string selectText = "Select Level";
         private int select;
         private Color selectColor;
@@ -162,8 +164,8 @@ namespace GameDevProject
             _spriteBatch.Begin();
             _level1.Draw(_spriteBatch);
             _level2.Draw(_spriteBatch);
-            _shroom.Draw(_spriteBatch);
             _ninja.Draw(_spriteBatch);
+            _shroom.Draw(_spriteBatch);
             _spriteBatch.End();
 
             GraphicsDevice.SetRenderTarget(null);
@@ -176,8 +178,8 @@ namespace GameDevProject
             {
                 case GameState.MainMenu:
                     _spriteBatch.DrawString(font, gameName, new Vector2(_screenWidth / 2, _screenHeight / 3), Color.FloralWhite, 0, font.MeasureString(gameName) / 2, 4, SpriteEffects.None, 0);
-                    _spriteBatch.DrawString(font, startText, new Vector2(_screenWidth / 2, _screenHeight / 1.70f), select == 0 ? selectColor : Color.White, 0, font.MeasureString(startText) / 2, 2, SpriteEffects.None, 0);
-                    _spriteBatch.DrawString(font, selectText, new Vector2(_screenWidth / 2, _screenHeight / 1.30f), select == 1 ? selectColor : Color.White, 0, font.MeasureString(selectText) / 2, 2, SpriteEffects.None, 0);
+                    _spriteBatch.DrawString(font, startText, new Vector2(_screenWidth / 2, _screenHeight / 1.65f), select == 0 ? selectColor : Color.White, 0, font.MeasureString(startText) / 2, 2, SpriteEffects.None, 0);
+                    _spriteBatch.DrawString(font, selectText, new Vector2(_screenWidth / 2, _screenHeight / 1.4f), select == 1 ? selectColor : Color.White, 0, font.MeasureString(selectText) / 2, 2, SpriteEffects.None, 0);
                     break;
                 case GameState.LevelSelect:
                     _spriteBatch.DrawString(font, "Ninja", new Vector2(_screenWidth / 1.9f, _screenHeight * 0.4f), Color.FloralWhite, 0, font.MeasureString(gameName) / 2, 4, SpriteEffects.None, 0);
@@ -186,6 +188,8 @@ namespace GameDevProject
                         _spriteBatch.DrawString(font, "Level " + (i + 1).ToString(), new Vector2(_screenWidth / 1.3f, _screenHeight * (0.3f + 0.1f * i)), select == i ? selectColor : Color.White, 0, font.MeasureString("Level " + (i + 1).ToString()) / 2, 2, SpriteEffects.None, 0);
                     break;
                 case GameState.GameOver:
+                    _spriteBatch.DrawString(font, gameOverText, new Vector2(_screenWidth / 2, 0.45f * _screenHeight), Color.Red, 0, font.MeasureString(gameOverText) / 2, 4, SpriteEffects.None, 0);
+                    _spriteBatch.DrawString(font, mainMenuText, new Vector2(_screenWidth / 2, 0.7f * _screenHeight), Color.Gold, 0, font.MeasureString(mainMenuText) / 2, 1, SpriteEffects.None, 0);
                     break;
                 case GameState.Won:
                     break;
