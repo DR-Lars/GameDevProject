@@ -84,17 +84,16 @@ namespace GameDevProject
             switch (_gameState)
             {
                 case GameState.MainMenu:
+                    ActivateLevel(0);
                     if (Keyboard.GetState().IsKeyDown(Keys.Down)) { if (select == 0) { select++; } }
                     else if (Keyboard.GetState().IsKeyDown(Keys.Up)) { if (select == 1) { select--; } }
 
                     if (Keyboard.GetState().IsKeyDown(Keys.Enter))
                     {
-
                         if (select == 0)
                         {
                             _gameState = GameState.Playing;
-
-                            //levelLoader = new LevelLoader(contentManager, currentLevel);
+                            ActivateLevel(1);
                         }
                         else if (select == 1)
                         {
@@ -149,6 +148,23 @@ namespace GameDevProject
                     break;
             }
             _spriteBatch.End();
+        }
+
+        private void ActivateLevel(int level)
+        {
+            switch (level)
+            {
+                case 1:
+                    _level1.active = true;
+                    _ninja.active = true;
+                    _shroom.active = true;
+                    break;
+                default:
+                    _level1.active = false;
+                    _ninja.active = false;
+                    _shroom.active = false;
+                    break;
+            }
         }
     }
 }
