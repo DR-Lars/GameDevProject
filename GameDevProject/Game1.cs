@@ -1,5 +1,6 @@
 using GameDevProject.GameObject;
 using GameDevProject.Input;
+using GameDevProject.Level;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -17,7 +18,7 @@ namespace GameDevProject
         private int _screenWidth, _screenHeight;
         private Ninja _ninja;
         private Shroom _shroom;
-        private GameTime _gameTime;
+        private Level1 _level1;
 
         public Game1()
         {
@@ -47,6 +48,7 @@ namespace GameDevProject
             // TODO: use this.Content to load your game content here
             _textureNinja = Content.Load<Texture2D>("ninjaWalk");
             _textureShroom = Content.Load<Texture2D>("shroomWalk");
+            _level1 = new Level1(Content);
         }
 
         protected override void Update(GameTime gameTime)
@@ -65,6 +67,7 @@ namespace GameDevProject
             GraphicsDevice.SetRenderTarget(_nativeRenderTarget);
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
+            _level1.Draw(_spriteBatch);
             _shroom.Draw(_spriteBatch);
             _ninja.Draw(_spriteBatch);
             _spriteBatch.End();
