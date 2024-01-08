@@ -19,6 +19,7 @@ namespace GameDevProject.GameObject
         private Animation _animation;
         private MovementManager _movementManager;
         public Hitbox hitbox { get; set; }
+        public bool active { get; set; } = true;
         public Vector2 Position { get; set; }
         public Vector2 Speed { get; set; }
         public IInputReader InputReader { get; set; }
