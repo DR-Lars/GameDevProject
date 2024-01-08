@@ -1,4 +1,4 @@
-using GameDevProject.Animate;
+﻿using GameDevProject.Animate;
 using GameDevProject.Input;
 using GameDevProject.Movement;
 using Microsoft.Xna.Framework;
@@ -21,7 +21,7 @@ namespace GameDevProject.GameObject
         private MovementManager _movementManager;
         private Ninja _target;
         public Hitbox hitbox { get; set; }
-        public bool active { get; set; } = false;
+        public bool active { get; set; } = true;
         public Vector2 Position { get; set; }
         public Vector2 Speed { get; set; }
         public IInputReader InputReader { get; set; }
