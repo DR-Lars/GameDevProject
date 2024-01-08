@@ -16,6 +16,7 @@ namespace GameDevProject.GameObject.Block
         public bool Passable { get; set; }
         public Color Color { get; set; }
         public Texture2D Texture { get; set; }
+        public bool active { get; set; } = true;
 
         public Block(int x, int y, Texture2D texture)
         {
@@ -30,7 +31,10 @@ namespace GameDevProject.GameObject.Block
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, BoundingBox, Color);
+            if (active)
+            {
+                spriteBatch.Draw(Texture, BoundingBox, Color);
+            }
         }
     }
 }
