@@ -4,6 +4,7 @@ using GameDevProject.Level;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace GameDevProject
 {
@@ -26,6 +27,7 @@ namespace GameDevProject
         private Level1 _level1;
         private Level2 _level2;
         private SpriteFont font;
+        private Song music;
 
         private const string gameName = "Ninja Evade";
         private const string startText = "Start";
@@ -71,6 +73,10 @@ namespace GameDevProject
 
             _textureNinja = Content.Load<Texture2D>("ninjaWalk");
             _textureShroom = Content.Load<Texture2D>("shroomWalk");
+
+            music = Content.Load<Song>("NinjaEvadeThemeSong");
+            MediaPlayer.Play(music);
+            MediaPlayer.IsRepeating = true;
         }
 
         protected override void Update(GameTime gameTime)
