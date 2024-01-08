@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.Collections.Generic;
 
 namespace GameDevProject
 {
@@ -19,12 +20,20 @@ namespace GameDevProject
         private SpriteBatch _spriteBatch;
         private Texture2D _textureNinja;
         private Texture2D _textureShroom;
+        private Texture2D _textureBoobam;
+        private Texture2D _textureOcto;
+        private Texture2D _textureCoin;
         private Rectangle _actualScreenRectangle;
         private RenderTarget2D _nativeRenderTarget;
         private int _screenWidth, _screenHeight;
         private KeyboardState _keyboardOld;
         private Ninja _ninja;
-        private Shroom _shroom;
+        private List<Shroom> _shrooms;
+        private List<Boobam> _boobams;
+        private List<Octo> _octos;
+        private Coin _coin1;
+        private Coin _coin2;
+        private Coin _coin3;
         private Level1 _level1;
         private Level2 _level2;
         private SpriteFont font;
@@ -63,9 +72,20 @@ namespace GameDevProject
 
             _level1 = new Level1(Content);
             _level2 = new Level2(Content);
+            _shrooms = new List<Shroom>();
+            _boobams = new List<Boobam>();
+            _octos = new List<Octo>();
 
             _ninja = new Ninja(_textureNinja, new KeyboardReader());
-            _shroom = new Shroom(_textureShroom, _ninja);
+            _shrooms.Add(new Shroom(_textureShroom, _ninja));
+            _shrooms.Add(new Shroom(_textureShroom, _ninja));
+            _shrooms.Add(new Shroom(_textureShroom, _ninja));
+            _boobams.Add(new Boobam(_textureBoobam, _ninja));
+            _boobams.Add(new Boobam(_textureBoobam, _ninja));
+            _octos.Add(new Octo(_textureOcto, _ninja));
+            _coin1 = new Coin(_textureCoin);
+            _coin2 = new Coin(_textureCoin);
+            _coin3 = new Coin(_textureCoin);
         }
 
         protected override void LoadContent()
@@ -77,6 +97,9 @@ namespace GameDevProject
 
             _textureNinja = Content.Load<Texture2D>("ninjaWalk");
             _textureShroom = Content.Load<Texture2D>("shroomWalk");
+            _textureBoobam = Content.Load<Texture2D>("boobamWalk");
+            _textureOcto = Content.Load<Texture2D>("octoWalk");
+            _textureCoin = Content.Load<Texture2D>("coin");
 
             music = Content.Load<Song>("NinjaEvadeThemeSong");
             MediaPlayer.Play(music);
@@ -93,7 +116,6 @@ namespace GameDevProject
             var previousPosition = _ninja.Position;
             _level1.Update(gameTime);
             _level2.Update(gameTime);
-            _shroom.Update(gameTime);
             _ninja.Update(gameTime);
             base.Update(gameTime);
             switch (_gameState)
@@ -130,6 +152,7 @@ namespace GameDevProject
                     {
                         _gameState = GameState.Playing;
                         currentLevel = select + 1;
+                        select = 0;
                     }
                     else if (keyboardNew.IsKeyDown(Keys.Escape) & !_keyboardOld.IsKeyDown(Keys.Escape))
                     {
@@ -156,16 +179,76 @@ namespace GameDevProject
                         playing = true;
                     }
 
+                    foreach (var shroom in _shrooms)
+                    {
+                        shroom.prevPosition = shroom.Position;
+                        shroom.Update(gameTime);
+                        if (_ninja.hitbox.IsTouching(shroom.hitbox) && shroom.active)
+                        {
+                            _gameState = GameState.GameOver;
+                        }
+                    }
+
+                    foreach (var boobam in _boobams)
+                    {
+                        boobam.prevPosition = boobam.Position;
+                        boobam.Update(gameTime);
+                        if (_ninja.hitbox.IsTouching(boobam.hitbox) && boobam.active)
+                        {
+                            _gameState = GameState.GameOver;
+                        }
+                    }
+
+                    foreach (var octo in _octos)
+                    {
+                        octo.prevPosition = octo.Position;
+                        octo.Update(gameTime);
+                        if (_ninja.hitbox.IsTouching(octo.hitbox) && octo.active)
+                        {
+                            _gameState = GameState.GameOver;
+                        }
+                    }
+
                     foreach (Block block in _level1.obstacles)
                     {
                         if (_ninja.hitbox.IsTouching(block.hitbox))
                         {
                             _ninja.Position = previousPosition;
                         }
+                        foreach (var shroom in _shrooms)
+                        {
+                            if (shroom.hitbox.IsTouching(block.hitbox))
+                            {
+                                shroom.Position = shroom.prevPosition;
+                            }
+                        }
+                        foreach (var boobam in _boobams)
+                        {
+                            if (boobam.hitbox.IsTouching(block.hitbox))
+                            {
+                                boobam.Position = boobam.prevPosition;
+                            }
+                        }
                     }
-                    if (_ninja.hitbox.IsTouching(_shroom.hitbox))
+                    _coin1.Update(gameTime);
+                    _coin2.Update(gameTime);
+                    _coin3.Update(gameTime);
+                    if (_ninja.hitbox.IsTouching(_coin1.hitbox))
                     {
-                        _gameState = GameState.GameOver;
+                        _coin1.active = false;
+                    }
+                    if (_ninja.hitbox.IsTouching(_coin2.hitbox))
+                    {
+                        _coin2.active = false;
+                    }
+                    if (_ninja.hitbox.IsTouching(_coin3.hitbox))
+                    {
+                        _coin3.active = false;
+                    }
+
+                    if (!_coin1.active && !_coin2.active && !_coin3.active)
+                    {
+                        _gameState = GameState.Won;
                     }
                     break;
             }
@@ -181,7 +264,22 @@ namespace GameDevProject
             _level1.Draw(_spriteBatch);
             _level2.Draw(_spriteBatch);
             _ninja.Draw(_spriteBatch);
-            _shroom.Draw(_spriteBatch);
+            foreach (var shroom in _shrooms)
+            {
+                shroom.Draw(_spriteBatch);
+            }
+            foreach (var boobam in _boobams)
+            {
+                boobam.Draw(_spriteBatch);
+            }
+            foreach (var octo in _octos)
+            {
+                octo.Draw(_spriteBatch);
+            }
+
+            _coin1.Draw(_spriteBatch);
+            _coin2.Draw(_spriteBatch);
+            _coin3.Draw(_spriteBatch);
             _spriteBatch.End();
 
             GraphicsDevice.SetRenderTarget(null);
@@ -211,8 +309,6 @@ namespace GameDevProject
                     _spriteBatch.DrawString(font, gameOverText, new Vector2(_screenWidth / 2, 0.45f * _screenHeight), Color.Red, 0, font.MeasureString(gameOverText) / 2, 4, SpriteEffects.None, 0);
                     _spriteBatch.DrawString(font, mainMenuText, new Vector2(_screenWidth / 2, 0.7f * _screenHeight), Color.Gold, 0, font.MeasureString(mainMenuText) / 2, 1, SpriteEffects.None, 0);
                     break;
-                case GameState.Playing:
-                    break;
             }
             _spriteBatch.End();
         }
@@ -224,19 +320,118 @@ namespace GameDevProject
                 case 0:
                     _level1.active = false;
                     _ninja.active = false;
-                    _shroom.active = false;
+                    foreach (var shroom in _shrooms)
+                    {
+                        shroom.active = false;
+                    }
+                    foreach (var boobam in _boobams)
+                    {
+                        boobam.active = false;
+                    }
+                    foreach (var octo in _octos)
+                    {
+                        octo.active = false;
+                    }
+                    _coin1.active = false;
+                    _coin2.active = false;
+                    _coin3.active = false;
                     break;
                 case 1:
                     _level1.active = true;
                     _ninja.active = true;
-                    _shroom.active = true;
-                    _shroom.Position = new Vector2(200, 20);
+                    _ninja.Position = new Vector2(15, 15);
+                    foreach (var shroom in _shrooms)
+                    {
+                        shroom.active = true;
+                    }
+                    _coin1.active = true;
+                    _shrooms[0].Position = new Vector2(200, 20);
+                    _coin1.Position = new Vector2(140, 80);
                     break;
                 case 2:
-                    _level2.active = true;
+                    _level1.active = true;
                     _ninja.active = true;
-                    _shroom.active = true;
-                    _shroom.Position = new Vector2(130, 70);
+                    _ninja.Position = new Vector2(15, 15);
+                    foreach (var shroom in _shrooms)
+                    {
+                        shroom.active = true;
+                    }
+                    _coin1.active = true;
+                    _shrooms[0].Position = new Vector2(200, 20);
+                    _shrooms[1].Position = new Vector2(100, 40);
+                    _coin1.Position = new Vector2(140, 80);
+                    break;
+                case 3:
+                    _level1.active = true;
+                    _ninja.active = true;
+                    _ninja.Position = new Vector2(15, 15);
+                    foreach (var shroom in _shrooms)
+                    {
+                        shroom.active = true;
+                    }
+                    foreach (var boobam in _boobams)
+                    {
+                        boobam.active = true;
+                    }
+                    _coin1.active = true;
+                    _coin2.active = true;
+                    _shrooms[0].Position = new Vector2(200, 20);
+                    _shrooms[1].Position = new Vector2(100, 40);
+                    _coin1.Position = new Vector2(140, 80);
+                    _coin2.Position = new Vector2(200, 30);
+                    _boobams[1].Position = new Vector2(100, 100);
+                    break;
+                case 4:
+                    _level1.active = true;
+                    _ninja.active = true;
+                    _ninja.Position = new Vector2(15, 15);
+                    foreach (var shroom in _shrooms)
+                    {
+                        shroom.active = true;
+                    }
+                    foreach (var boobam in _boobams)
+                    {
+                        boobam.active = true;
+                    }
+                    foreach (var octo in _octos)
+                    {
+                        octo.active = true;
+                    }
+                    _coin1.active = true;
+                    _coin2.active = true;
+                    _shrooms[0].Position = new Vector2(200, 20);
+                    _shrooms[1].Position = new Vector2(100, 40);
+                    _coin1.Position = new Vector2(140, 80);
+                    _coin2.Position = new Vector2(200, 30);
+                    _boobams[1].Position = new Vector2(100, 100);
+                    break;
+                case 5:
+                    _level1.active = true;
+                    _ninja.active = true;
+                    _ninja.Position = new Vector2(15, 15);
+                    foreach (var shroom in _shrooms)
+                    {
+                        shroom.active = true;
+                    }
+                    foreach (var boobam in _boobams)
+                    {
+                        boobam.active = true;
+                    }
+                    foreach (var octo in _octos)
+                    {
+                        octo.active = true;
+                    }
+                    _coin1.active = true;
+                    _coin2.active = true;
+                    _coin3.active = true;
+                    _shrooms[0].Position = new Vector2(200, 20);
+                    _shrooms[1].Position = new Vector2(100, 40);
+                    _shrooms[2].Position = new Vector2(50, 80);
+                    _coin1.Position = new Vector2(140, 80);
+                    _coin2.Position = new Vector2(200, 30);
+                    _coin3.Position = new Vector2(140, 50);
+                    _boobams[0].Position = new Vector2(90, 20);
+                    _boobams[1].Position = new Vector2(100, 100);
                     break;
                 default: 
                     break;
