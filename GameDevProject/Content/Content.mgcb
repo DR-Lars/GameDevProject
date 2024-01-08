@@ -20,6 +20,12 @@
 /processorParam:TextureFormat=Compressed
 /build:Font.spritefont
 
+#begin NinjaEvadeThemeSong.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:NinjaEvadeThemeSong.ogg
+
 #begin ninjaWalk.png
 /importer:TextureImporter
 /processor:TextureProcessor
