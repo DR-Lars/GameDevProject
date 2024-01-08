@@ -12,7 +12,6 @@ namespace GameDevProject.GameObject
     {
         public Hitbox hitbox { get; set; }
         public bool active { get; set; }
-        public Collision collision { get; set; }
         void Update(GameTime gameTime);
         void Draw(SpriteBatch spriteBatch);
     }
