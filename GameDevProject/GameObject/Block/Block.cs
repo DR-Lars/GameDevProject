@@ -20,8 +20,8 @@ namespace GameDevProject.GameObject.Block
         public Block(int x, int y, Texture2D texture)
         {
             BoundingBox = new Rectangle(x, y, 32, 32);
-            Passable = false;
-            Color = Color.Green;
+            Passable = true;
+            Color = Color.White;
             Texture = texture;
         }
         public void Update(GameTime gameTime)
