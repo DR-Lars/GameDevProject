@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameDevProject.GameObject.Block;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace GameDevProject.Level
 {
     internal interface ILevel
     {
+        public List<Block> obstacles { get; set; }
         void Update(GameTime gameTime);
         void Draw(SpriteBatch spriteBatch);
     }
