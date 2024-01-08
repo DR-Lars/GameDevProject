@@ -1,4 +1,4 @@
-﻿using GameDevProject.GameObject;
+using GameDevProject.GameObject;
 using GameDevProject.Input;
 using GameDevProject.Level;
 using Microsoft.Xna.Framework;
@@ -9,6 +9,9 @@ namespace GameDevProject
 {
     public class Game1 : Game
     {
+        private enum GameState { MainMenu, Playing, GameOver, Won, LevelSelect }
+
+        private GameState _gameState;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D _textureNinja;
@@ -60,6 +63,19 @@ namespace GameDevProject
             _shroom.Update(gameTime);
             _ninja.Update(gameTime);
             base.Update(gameTime);
+            switch (_gameState)
+            {
+                case GameState.MainMenu:
+                    break;
+                case GameState.LevelSelect:
+                    break;
+                case GameState.GameOver:
+                    break;
+                case GameState.Won:
+                    break;
+                case GameState.Playing:
+                    break;
+            }
         }
 
         protected override void Draw(GameTime gameTime)
@@ -77,6 +93,20 @@ namespace GameDevProject
             _spriteBatch.Draw(_nativeRenderTarget, _actualScreenRectangle, Color.White);
             _spriteBatch.End();
             base.Draw(gameTime);
+
+            switch (_gameState)
+            {
+                case GameState.MainMenu:
+                    break;
+                case GameState.LevelSelect:
+                    break;
+                case GameState.GameOver:
+                    break;
+                case GameState.Won:
+                    break;
+                case GameState.Playing:
+                    break;
+            }
         }
     }
 }
