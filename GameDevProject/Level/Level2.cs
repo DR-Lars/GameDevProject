@@ -16,6 +16,7 @@ namespace GameDevProject.Level
     internal class Level2 : ILevel
     {
         private ContentManager _content;
+        public bool active { get; set; } = false;
         public Level2(ContentManager content)
         {
             _content = content;
@@ -28,19 +29,22 @@ namespace GameDevProject.Level
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            //Background
-            for (int x = 0; x < 256; x += 32)
+            if (active)
             {
-                for (int y = 0; y < 144; y += 32)
+                //Background
+                for (int x = 0; x < 256; x += 32)
                 {
-                    BlockFactory.CreateBlock("NORMAL", x, y, _content.Load<Texture2D>("tileGrass")).Draw(spriteBatch);
+                    for (int y = 0; y < 144; y += 32)
+                    {
+                        BlockFactory.CreateBlock("NORMAL", x, y, _content.Load<Texture2D>("tileGrass")).Draw(spriteBatch);
+                    }
                 }
+
+                //Obstacle
+                BlockFactory.CreateBlock("BOULDER", 80, 50, _content.Load<Texture2D>("tileBoulder")).Draw(spriteBatch);
+
+                //Characters
             }
-
-            //Obstacle
-            BlockFactory.CreateBlock("BOULDER", 80, 50, _content.Load<Texture2D>("tileBoulder")).Draw(spriteBatch);
-
-            //Characters
         }
     }
 }
