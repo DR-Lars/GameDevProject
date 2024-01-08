@@ -43,13 +43,19 @@ namespace GameDevProject.GameObject
         }
         public void Update(GameTime gameTime)
         {
-            Move(gameTime.ElapsedGameTime.TotalSeconds);
-            _animation.Update(gameTime);
+            if (active)
+            {
+                Move(gameTime.ElapsedGameTime.TotalSeconds);
+                _animation.Update(gameTime);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, Position, _animation.currentFrame.SourceRectangle, Color.White);
+            if (active)
+            {
+                spriteBatch.Draw(_texture, Position, _animation.currentFrame.SourceRectangle, Color.White);
+            }
         }
 
         private void Move(double totalseconds)
