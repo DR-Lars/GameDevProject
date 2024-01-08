@@ -22,6 +22,7 @@ namespace GameDevProject
         private Ninja _ninja;
         private Shroom _shroom;
         private Level1 _level1;
+        private SpriteFont font;
 
         public Game1()
         {
@@ -49,6 +50,8 @@ namespace GameDevProject
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            font = Content.Load<SpriteFont>("Font");
+
             _textureNinja = Content.Load<Texture2D>("ninjaWalk");
             _textureShroom = Content.Load<Texture2D>("shroomWalk");
             _level1 = new Level1(Content);
