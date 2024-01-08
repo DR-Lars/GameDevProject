@@ -10,6 +10,7 @@ namespace GameDevProject.GameObject
 {
     internal interface IGameObject
     {
+        public bool active { get; set; }
         void Update(GameTime gameTime);
         void Draw(SpriteBatch spriteBatch);
     }
