@@ -1,4 +1,4 @@
-using GameDevProject.GameObject;
+﻿using GameDevProject.GameObject;
 using GameDevProject.Input;
 using GameDevProject.Level;
 using Microsoft.Xna.Framework;
@@ -32,6 +32,7 @@ namespace GameDevProject
         private const string gameName = "Ninja Evade";
         private const string startText = "Start";
         private const string gameOverText = "Game Over";
+        private const string winText = "You Won!";
         private const string mainMenuText = "Press 'Esc' to go to main menu";
         private const string selectText = "Select Level";
         private int select;
@@ -141,6 +142,8 @@ namespace GameDevProject
                     break;
                 case GameState.Won:
                     playing = false;
+                    if (Keyboard.GetState().IsKeyDown(Keys.Escape) && !_keyboardOld.IsKeyDown(Keys.Escape))
+                        _gameState = GameState.MainMenu;
                     break;
                 case GameState.Playing:
                     if (Keyboard.GetState().IsKeyDown(Keys.Escape) && !_keyboardOld.IsKeyDown(Keys.Escape))
@@ -149,7 +152,7 @@ namespace GameDevProject
                     {
                         ActivateLevel(currentLevel);
                         playing = true;
-                        _gameState = GameState.GameOver;
+                        _gameState = GameState.Won;
                     }
                     break;
             }
@@ -187,11 +190,13 @@ namespace GameDevProject
                     for (int i = 0; i < 5; i++)
                         _spriteBatch.DrawString(font, "Level " + (i + 1).ToString(), new Vector2(_screenWidth / 1.3f, _screenHeight * (0.3f + 0.1f * i)), select == i ? selectColor : Color.White, 0, font.MeasureString("Level " + (i + 1).ToString()) / 2, 2, SpriteEffects.None, 0);
                     break;
+                case GameState.Won:
+                    _spriteBatch.DrawString(font, winText, new Vector2(_screenWidth / 2, 0.45f * _screenHeight), Color.LightGreen, 0, font.MeasureString(winText) / 2, 4, SpriteEffects.None, 0);
+                    _spriteBatch.DrawString(font, mainMenuText, new Vector2(_screenWidth / 2, 0.7f * _screenHeight), Color.Gold, 0, font.MeasureString(mainMenuText) / 2, 1, SpriteEffects.None, 0);
+                    break;
                 case GameState.GameOver:
                     _spriteBatch.DrawString(font, gameOverText, new Vector2(_screenWidth / 2, 0.45f * _screenHeight), Color.Red, 0, font.MeasureString(gameOverText) / 2, 4, SpriteEffects.None, 0);
                     _spriteBatch.DrawString(font, mainMenuText, new Vector2(_screenWidth / 2, 0.7f * _screenHeight), Color.Gold, 0, font.MeasureString(mainMenuText) / 2, 1, SpriteEffects.None, 0);
-                    break;
-                case GameState.Won:
                     break;
                 case GameState.Playing:
                     break;
