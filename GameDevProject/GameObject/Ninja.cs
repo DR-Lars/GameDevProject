@@ -51,10 +51,10 @@ namespace GameDevProject.GameObject
 
         private void Move()
         {
-            int aniDir = _movementManager.AnimationDirection(this);
+            int aniDir = _movementManager.AnimationDirection(this, 0);
             if (aniDir != _animation.direction)
             {
-                _animation = new Animation(_movementManager.AnimationDirection(this));
+                _animation = new Animation(_movementManager.AnimationDirection(this, 0));
             }
             _animation.SelectAnimation(_texture.Width, _texture.Height, 4, 4);
         }

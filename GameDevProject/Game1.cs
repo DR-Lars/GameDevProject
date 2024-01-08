@@ -1,4 +1,4 @@
-using GameDevProject.GameObject;
+﻿using GameDevProject.GameObject;
 using GameDevProject.Input;
 using GameDevProject.Level;
 using Microsoft.Xna.Framework;
@@ -38,7 +38,7 @@ namespace GameDevProject
             _actualScreenRectangle = new Rectangle(0,0,_screenWidth,_screenHeight);
             base.Initialize();
             _ninja = new Ninja(_textureNinja, new KeyboardReader());
-            _shroom = new Shroom(_textureShroom, new StandardNPC(), _ninja);
+            _shroom = new Shroom(_textureShroom, _ninja);
         }
 
         protected override void LoadContent()

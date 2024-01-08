@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace GameDevProject.GameObject
 {
@@ -18,26 +19,30 @@ namespace GameDevProject.GameObject
         private Texture2D _texture;
         private Animation _animation;
         private MovementManager _movementManager;
+        private Ninja _target;
+        public Hitbox hitbox { get; set; }
         public Vector2 Position { get; set; }
         public Vector2 Speed { get; set; }
         public IInputReader InputReader { get; set; }
 
-        public Shroom(Texture2D texture, IInputReader inputReader)
+        public Shroom(Texture2D texture, Ninja target)
         {
             _movementManager = new MovementManager();
 
             _texture = texture;
-            InputReader = inputReader;
+            _target = target;
+
+            _movementManager.target = _target;
 
             _animation = new Animation(0);
             _animation.SelectAnimation(texture.Width, texture.Height, 4, 4);
 
-            Position = new Vector2(0, 0);
-            Speed = new Vector2(1, 1);
+            Position = new Vector2(200, 20);
+            Speed = new Vector2((float)0.1, (float)0.1);
         }
         public void Update(GameTime gameTime)
         {
-            Move();
+            Move(gameTime.ElapsedGameTime.TotalSeconds);
             _animation.Update(gameTime);
         }
 
@@ -46,12 +51,13 @@ namespace GameDevProject.GameObject
             spriteBatch.Draw(_texture, Position, _animation.currentFrame.SourceRectangle, Color.White);
         }
 
-        private void Move()
+        private void Move(double totalseconds)
         {
-            int aniDir = _movementManager.AnimationDirection(this);
+            _movementManager.secondCounter += totalseconds;
+            int aniDir = _movementManager.AnimationDirection(this, 1);
             if (aniDir != _animation.direction)
             {
-                _animation = new Animation(_movementManager.AnimationDirection(this));
+                _animation = new Animation(_movementManager.AnimationDirection(this, 1));
             }
             _animation.SelectAnimation(_texture.Width, _texture.Height, 4, 4);
         }
