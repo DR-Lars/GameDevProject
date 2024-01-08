@@ -14,6 +14,8 @@ namespace GameDevProject.Animate
         private int _counter;
         private double _secondCounter;
         private bool _plus;
+
+        public int widthOfFrame, heightOfFrame;
         public int direction { get; private set; }
         
         public int fps { get; set; } = 5;
@@ -63,8 +65,8 @@ namespace GameDevProject.Animate
 
         public void SelectAnimation(int width, int height, int numberOfWidthSprites, int numberOfHeightSprites)
         {
-            int widthOfFrame = width / numberOfWidthSprites;
-            int heightOfFrame = height / numberOfHeightSprites;
+            widthOfFrame = width / numberOfWidthSprites;
+            heightOfFrame = height / numberOfHeightSprites;
 
             if (direction >= 4)
             {

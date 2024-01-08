@@ -1,4 +1,5 @@
 ﻿using GameDevProject.Animate;
+using GameDevProject.GameObject;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,11 @@ namespace GameDevProject.Movement
     internal class MovementManager
     {
         private int savedDirection;
+        public double secondCounter;
+        public Ninja target;
         public Vector2 direction { get; set; }
+        public int fps { get; set; } = 5;
+
         public void Move(IMovable movable)
         {
             direction = movable.InputReader.ReadInput();
@@ -28,10 +33,29 @@ namespace GameDevProject.Movement
             }
         }
 
-        public int AnimationDirection(IMovable movable)
+        public void MoveToTarget(IMovable movable)
+        {
+            if (secondCounter >= 1d / fps)
+            {
+                direction = target.Position - movable.Position;
+                Vector2 distance = direction * movable.Speed;
+                movable.Position += distance;
+                secondCounter = 0;
+            }
+        }
+
+        public int AnimationDirection(IMovable movable, int movementType)
         {
             Vector2 beforePos = movable.Position;
-            Move(movable);
+            switch (movementType)
+            {
+                case 1:
+                    MoveToTarget(movable);
+                    break;
+                default:
+                    Move(movable);
+                    break;
+            }
             if (beforePos.Y > movable.Position.Y)
             {
                 savedDirection = 1;
