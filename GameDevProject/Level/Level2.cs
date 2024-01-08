@@ -16,6 +16,7 @@ namespace GameDevProject.Level
     internal class Level2 : ILevel
     {
         private ContentManager _content;
+        public List<Block> obstacles {  get; set; }
         public bool active { get; set; } = false;
         public Level2(ContentManager content)
         {

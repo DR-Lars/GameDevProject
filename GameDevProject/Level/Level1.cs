@@ -1,4 +1,4 @@
-﻿using GameDevProject.GameObject;
+using GameDevProject.GameObject;
 using GameDevProject.GameObject.Block;
 using GameDevProject.Input;
 using Microsoft.Xna.Framework;
@@ -13,10 +13,11 @@ using System.Threading.Tasks;
 
 namespace GameDevProject.Level
 {
-    internal class Level1 : ILevel, IGameObject
+    internal class Level1 : ILevel
     {
         private ContentManager _content;
-        public bool active { get; set; } = false;
+        public List<Block> obstacles {  get; set; }
+        public bool active { get; set; }
         public Level1(ContentManager content)
         {
             _content = content;
@@ -24,7 +25,10 @@ namespace GameDevProject.Level
 
         public void Update(GameTime gameTime)
         {
-
+            foreach (var block in obstacles)
+            {
+                block.Update(gameTime);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
